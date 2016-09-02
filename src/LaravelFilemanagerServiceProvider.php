@@ -49,6 +49,11 @@ class LaravelFilemanagerServiceProvider extends ServiceProvider {
         {
             return true;
         });
+
+        $this->app['laravel-filemanager.config'] = $this->app->share(function ()
+        {
+            return Config::get('lfm');
+        });
     }
 
 }

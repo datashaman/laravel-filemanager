@@ -23,7 +23,7 @@ class CropController extends Controller {
         $image = Input::get('img');
 
         return View::make('laravel-filemanager::crop')
-            ->with('img', Config::get('lfm.images_url') . $dir . "/" . $image)
+            ->with('img', $this->getConfig('images_url') . $dir . "/" . $image)
             ->with('dir', $dir)
             ->with('image', $image);
     }
@@ -49,7 +49,7 @@ class CropController extends Controller {
         // make new thumbnail
         $thumb_img = Image::make(public_path() . $img);
         $thumb_img->fit(200, 200)
-            ->save(base_path() . "/" . Config::get('lfm.images_dir') . $dir . "/thumbs/" . basename($img));
+            ->save(base_path() . "/" . $this->getConfig('images_dir') . $dir . "/thumbs/" . basename($img));
     }
 
 }

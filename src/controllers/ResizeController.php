@@ -23,8 +23,8 @@ class ResizeController extends Controller {
         $image = Input::get('img');
         $dir = Input::get('dir');
 
-        $original_width = Image::make(base_path() . "/" . Config::get('lfm.images_dir') . $dir . "/" . $image)->width();
-        $original_height = Image::make(base_path() . "/" . Config::get('lfm.images_dir') . $dir . "/" . $image)->height();
+        $original_width = Image::make(base_path() . "/" . $this->getConfig('images_dir') . $dir . "/" . $image)->width();
+        $original_height = Image::make(base_path() . "/" . $this->getConfig('images_dir') . $dir . "/" . $image)->height();
 
         $scaled = false;
 
@@ -49,7 +49,7 @@ class ResizeController extends Controller {
         }
 
         return View::make('laravel-filemanager::resize')
-            ->with('img', Config::get('lfm.images_url') . $dir . "/" . $image)
+            ->with('img', $this->getConfig('images_url') . $dir . "/" . $image)
             ->with('dir', $dir)
             ->with('image', $image)
             ->with('height', number_format($height, 0))

@@ -29,9 +29,9 @@ class ItemsController extends Controller {
     function __construct()
     {
         if (Session::get('lfm_type') == "Images")
-            $this->file_location = Config::get('lfm.images_dir');
+            $this->file_location = $this->getConfig('images_dir');
         else
-            $this->file_location = Config::get('lfm.files_dir');
+            $this->file_location = $this->getConfig('files_dir');
     }
 
 
@@ -60,8 +60,8 @@ class ItemsController extends Controller {
         }
 
         $file_info = [];
-        $icon_array = Config::get('lfm.file_icon_array');
-        $type_array = Config::get('lfm.file_type_array');
+        $icon_array = $this->getConfig('file_icon_array');
+        $type_array = $this->getConfig('file_type_array');
 
         foreach ($files as $file)
         {
@@ -163,9 +163,9 @@ class ItemsController extends Controller {
         }
 
         if ((Session::has('lfm_type')) && (Session::get('lfm_type') == "Images"))
-            $dir_location = Config::get('lfm.images_url');
+            $dir_location = $this->getConfig('images_url');
         else
-            $dir_location = Config::get('lfm.files_url');
+            $dir_location = $this->getConfig('files_url');
 
         if (Input::get('show_list') == 1)
         {

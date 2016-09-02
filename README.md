@@ -94,6 +94,60 @@ CKEditor instance as follows:
     you are using a custom route you will have to change `/laravel-filemanager?type=Images` to correspond
     to whatever route you have chosen. Be sure to include the `?type=Images` parameter.
     
+## Advanced Usage
+
+If you want to dynamically modify the config, to say: have an images directory per user, or alter the accepted files for different use cases, you can override the package in a service provider as follows:
+
+```php
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Config;
+use Illuminate\Support\ServiceProvider;
+
+class FileManagerServiceProvider extends ServiceProvider {
+    /**
+     * Register any application services.
+     *
+     * @return void
+     */
+    public function register()
+    {
+        $this->app->singleton('laravel-filemanager.config', function ()
+        {
+            if (Auth::check()) {
+                $user = Auth::user();
+
+                $config = Config::get('lfm');
+
+                $config = array_merge($config, [
+                    'images_dir' => $config['images_dir']] . $user->id . '/',
+                    'images_url' => $config['images_url']] . $user->id . '/',
+
+                    'files_dir' => $config['files_dir']] . $user->id . '/',
+                    'files_url' => $config['files_url']] . $user->id . '/',
+                ]);
+
+                $images_path = base_path($config['images_dir']);
+
+                if (! is_dir($images_path)) {
+                    mkdir($images_path, 0777, true);
+                }
+
+                $files_path = base_path($config['files_dir']);
+
+                if (! is_dir($files_path)) {
+                    mkdir($files_path, 0777, true);
+                }
+
+                return $config;
+            }
+        });
+    }
+}
+```
+
+*NB*: Don't forget to load your new service provider in `config/app.php`.
+
+The config for the package is resolved via Laravel's `IoC` container, with key `laravel-filemanager.config`. It's expected to return an `array` or implementation of `ArrayAccess`, with the new modified config.
     
 ## Security
 
@@ -106,7 +160,7 @@ simply wrap the routes in a group, perhaps like this:
     Route::group(array('before' => 'auth'), function ()
     {
         Route::get('/laravel-filemanager', '\Tsawler\Laravelfilemanager\controllers\LfmController@show');
-        Route::post('/laravel-filemanager/upload', '\Tsawler\Laravelfilemanager\controllers\LfmController@upload');
+        Route::post('/laravel-filemanager/upload', '\Tsawler\Laravelfilemanager\controllers\UploadController@upload');
         // list all lfm routes here...
     });
     

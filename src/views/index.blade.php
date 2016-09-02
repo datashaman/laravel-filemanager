@@ -353,16 +353,16 @@
 
         @if ((Session::has('lfm_type')) && (Session::get('lfm_type') == "Images"))
             if (path != '/') {
-                window.opener.CKEDITOR.tools.callFunction(funcNum, '{{ \Config::get('lfm.images_url') }}' + path + "/" + file);
+                window.opener.CKEDITOR.tools.callFunction(funcNum, '{{ array_get(\App::make('laravel-filemanager.config'), 'images_url') }}' + path + "/" + file);
             } else {
-                window.opener.CKEDITOR.tools.callFunction(funcNum, '{{ \Config::get('lfm.images_url') }}' + file);
+                window.opener.CKEDITOR.tools.callFunction(funcNum, '{{ array_get(\App::make('laravel-filemanager.config'), 'images_url') }}' + file);
             }
         @else
             if (path != '/') {
-            window.opener.CKEDITOR.tools.callFunction(funcNum, '{{ \Config::get('lfm.files_url') }}' + path + "/" + file);
-        } else {
-            window.opener.CKEDITOR.tools.callFunction(funcNum, '{{ \Config::get('lfm.files_url') }}' + file);
-        }
+                window.opener.CKEDITOR.tools.callFunction(funcNum, '{{ array_get(\App::make('laravel-filemanager.config'), 'files_url') }}' + path + "/" + file);
+            } else {
+                window.opener.CKEDITOR.tools.callFunction(funcNum, '{{ array_get(\App::make('laravel-filemanager.config'), 'files_url') }}' + file);
+            }
         @endif
         window.close();
     }

@@ -24,9 +24,9 @@ class DownloadController extends Controller {
     function __construct()
     {
         if (Session::get('lfm_type') == "Images")
-            $this->file_location = Config::get('lfm.images_dir');
+            $this->file_location = $this->getConfig('images_dir');
         else
-            $this->file_location = Config::get('lfm.files_dir');
+            $this->file_location = $this->getConfig('files_dir');
     }
 
 

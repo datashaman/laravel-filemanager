@@ -26,10 +26,10 @@ class LfmController extends Controller {
     {
         if ((Session::has('lfm_type')) && (Session::get('lfm_type') == 'Files'))
         {
-            $this->file_location = Config::get('lfm.files_dir');
+            $this->file_location = $this->getConfig('files_dir');
         } else
         {
-            $this->file_location = Config::get('lfm.images_dir');
+            $this->file_location = $this->getConfig('images_dir');
         }
     }
 
@@ -44,11 +44,11 @@ class LfmController extends Controller {
         if ((Input::has('type')) && (Input::get('type') == "Files"))
         {
             Session::put('lfm_type', 'Files');
-            $this->file_location = Config::get('lfm.files_dir');
+            $this->file_location = $this->getConfig('files_dir');
         } else
         {
             Session::put('lfm_type', 'Images');
-            $this->file_location = Config::get('lfm.images_dir');
+            $this->file_location = $this->getConfig('images_dir');
         }
 
         if (Input::has('base'))
